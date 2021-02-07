@@ -1,0 +1,14 @@
+.Categories {
+  padding: var(--spacing-unit) 0;
+
+  &__category {
+    padding: var(--spacing-unit);
+    border-top: solid thin var(--border-color);
+    position: relative;
+    font-size: var(--font-size-big);
+  }
+
+  &__category:last-child {
+    border-bottom: solid thin var(--border-color);
+  }
+}

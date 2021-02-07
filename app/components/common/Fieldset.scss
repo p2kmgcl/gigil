@@ -1,0 +1,19 @@
+.Fieldset {
+  border: none;
+  padding: var(--spacing-unit);
+  display: flex;
+  gap: var(--spacing-unit);
+
+  > * {
+    flex-grow: 1;
+  }
+
+  &--column {
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  &--row {
+    flex-direction: row;
+  }
+}

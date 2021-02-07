@@ -1,0 +1,12 @@
+build/
+node_modules/
+.husky
+.netlify
+.editorconfig
+.eslintignore
+.prettierignore
+.gitignore
+yarn.lock
+*.svg
+*.png
+*.txt

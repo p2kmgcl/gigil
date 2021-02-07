@@ -1,0 +1,55 @@
+.App {
+  &__main {
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 1fr min-content;
+    background: var(--main-background);
+    color: var(--main-color);
+  }
+
+  &__header {
+    grid-row: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--highlight-background);
+    color: var(--highlight-color);
+    padding: var(--spacing-unit);
+  }
+
+  &__select {
+    font-family: inherit;
+    font-size: 1rem;
+    background-color: var(--highlight-background);
+    color: var(--highlight-color);
+    border: none;
+    cursor: pointer;
+    border-radius: var(--roundness);
+    padding: var(--spacing-unit) var(--spacing-unit) var(--spacing-unit)
+      calc(var(--spacing-unit) / 2);
+    -webkit-tap-highlight-color: transparent;
+    appearance: none;
+
+    &:focus {
+      outline: solid calc(var(--spacing-unit) * 0.25) var(--primary-background);
+    }
+
+    &:hover {
+      background-color: var(--primary-background);
+      color: var(--primary-color);
+    }
+  }
+
+  &__add-button {
+    width: 3.25rem;
+    height: 3.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__content {
+    grid-row: 1;
+    overflow: auto;
+  }
+}

@@ -1,0 +1,21 @@
+.Banner {
+  padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 1.5);
+  margin-bottom: var(--spacing-unit);
+  background-color: var(--primary-background);
+
+  &--center {
+    text-align: center;
+  }
+
+  &__title {
+    font-size: var(--font-size-large);
+    color: var(--primary-color);
+    font-weight: bolder;
+    margin: 0;
+  }
+
+  &__subtitle {
+    color: var(--primary-color-secondary);
+    margin: 0;
+  }
+}

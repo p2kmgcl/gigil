@@ -1,0 +1,75 @@
+.Button {
+  font-family: inherit;
+  font-size: 1em;
+  font-weight: bolder;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--border-radius, var(--roundness));
+  padding: var(--padding, var(--spacing-unit));
+  -webkit-tap-highlight-color: transparent;
+
+  &:focus {
+    outline: solid calc(var(--spacing-unit) * 0.25) var(--primary-background);
+  }
+
+  &--primary {
+    background-color: var(--primary-background);
+    color: var(--primary-color);
+
+    &:hover {
+      background-color: var(--accent-background);
+      color: var(--accent-color);
+    }
+  }
+
+  &--secondary {
+    background-color: var(--accent-background);
+    color: var(--accent-color);
+
+    &:hover {
+      background-color: var(--primary-background);
+      color: var(--primary-color);
+    }
+  }
+
+  &--link {
+    color: var(--main-color);
+    background-color: var(--main-background);
+    text-decoration: underline;
+    padding: 0;
+
+    &:hover {
+      color: var(--main-secondary-color);
+    }
+  }
+
+  &--invisible {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    border-radius: 0;
+
+    &:focus {
+      outline-color: var(--primary-background);
+    }
+
+    &:hover,
+    &:active {
+      background: transparent;
+    }
+  }
+
+  &--danger {
+    background-color: #f44;
+    color: #fff;
+
+    &:hover {
+      background-color: #f88;
+    }
+  }
+}

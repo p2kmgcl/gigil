@@ -1,0 +1,25 @@
+.Label {
+  width: 100%;
+  display: grid;
+  grid-template: auto / 1fr;
+  gap: calc(var(--spacing-unit) / 2);
+
+  &__content {
+    grid-column: 1 / 2;
+  }
+
+  &__input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: var(--spacing-unit);
+    border: solid thin var(--border-color);
+    border-radius: var(--roundness);
+    background-color: var(--main-background);
+    color: var(--main-color);
+    resize: none;
+
+    &:focus {
+      outline: solid calc(var(--spacing-unit) * 0.25) var(--primary-background);
+    }
+  }
+}

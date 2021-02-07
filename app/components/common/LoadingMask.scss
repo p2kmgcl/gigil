@@ -1,0 +1,61 @@
+@keyframes LoadingMask__spinner {
+  from {
+    transform: translateX(-50%) translateY(-50%) rotate(0deg);
+  }
+  to {
+    transform: translateX(-50%) translateY(-50%) rotate(360deg);
+  }
+}
+
+@keyframes LoadingMask__fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.2;
+  }
+}
+
+.LoadingMask {
+  &__wrapper {
+    position: relative;
+  }
+
+  &__indicator::after {
+    content: '';
+    border-radius: 50%;
+    width: calc(var(--spacing-unit) * 8);
+    height: calc(var(--spacing-unit) * 8);
+    box-sizing: border-box;
+    margin: 0 auto;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    text-indent: -9999em;
+    border: calc(var(--spacing-unit) * 2) solid var(--contrast-background);
+    border-left-color: var(--contrast-color);
+    transform: translateX(-50%) translateY(-50%) translateZ(0);
+    opacity: 0;
+    animation: LoadingMask__spinner calc(var(--transition-duration) * 8)
+        infinite linear,
+      LoadingMask__fadeIn ease calc(var(--transition-duration));
+    animation-fill-mode: forwards;
+    z-index: 9999;
+    cursor: wait;
+  }
+
+  &__indicator::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--contrast-background);
+    opacity: 0;
+    animation: LoadingMask__fadeIn ease var(--transition-duration);
+    animation-fill-mode: forwards;
+    z-index: 8888;
+    cursor: wait;
+  }
+}

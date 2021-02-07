@@ -1,0 +1,35 @@
+.MovementList {
+  &__movement {
+    display: grid;
+    grid-template: min-content min-content / min-content 1fr;
+    grid-template-areas: 'll tr' 'll br';
+    gap: 0 var(--spacing-unit);
+    padding: var(--spacing-unit);
+    border-top: solid thin var(--border-color);
+    position: relative;
+
+    &:last-child {
+      border-bottom: solid thin var(--border-color);
+    }
+
+    &-currency {
+      grid-area: ll;
+      font-size: var(--font-size-big);
+    }
+
+    &-date {
+      grid-area: br;
+      text-align: right;
+      color: var(--main-color-secondary);
+      font-size: var(--font-size-small);
+    }
+
+    &-category {
+      grid-area: tr;
+      text-align: right;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}

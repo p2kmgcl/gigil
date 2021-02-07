@@ -1,0 +1,98 @@
+:root {
+  --hue: 290;
+  --border-color: hsl(var(--hue), 0%, 75%);
+
+  --main-color: hsl(var(--hue), 0%, 10%);
+  --main-color-secondary: hsl(var(--hue), 0%, 34%);
+  --main-background: hsl(var(--hue), 10%, 99%);
+
+  --primary-color: hsl(var(--hue), 0%, 100%);
+  --primary-color-secondary: hsl(var(--hue), 0%, 77%);
+  --primary-background: hsl(var(--hue), 40%, 30%);
+
+  --highlight-color: hsl(var(--hue), 0%, 100%);
+  --highlight-color-secondary: hsl(var(--hue), 0%, 81%);
+  --highlight-background: hsl(var(--hue), 42%, 40%);
+
+  --accent-color: hsl(var(--hue), 0%, 20%);
+  --accent-color-secondary: hsl(var(--hue), 0%, 25%);
+  --accent-background: hsl(var(--hue), 40%, 92%);
+
+  --disabled-color: hsl(var(--hue), 0%, 30%);
+  --disabled-color-secondary: hsl(var(--hue), 0%, 40%);
+  --disabled-background: hsl(var(--hue), 0%, 96%);
+
+  --contrast-color: #ffffff;
+  --contrast-color-secondary: #aaaaaa;
+  --contrast-background: #000000;
+
+  --font-size: 16px;
+  --font-size-small: 14px;
+  --font-size-big: 20px;
+  --font-size-large: 48px;
+
+  --roundness: 8px;
+  --spacing-unit: 16px;
+  --transition-duration: 0.2s;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --border-color: hsl(var(--hue), 0%, 75%);
+
+    --main-color: hsl(var(--hue), 0%, 95%);
+    --main-color-secondary: hsl(var(--hue), 0%, 72%);
+    --main-background: hsl(var(--hue), 10%, 17%);
+
+    --primary-color: hsl(var(--hue), 0%, 100%);
+    --primary-color-secondary: hsl(var(--hue), 0%, 77%);
+    --primary-background: hsl(var(--hue), 20%, 30%);
+
+    --highlight-color: hsl(var(--hue), 0%, 100%);
+    --highlight-color-secondary: hsl(var(--hue), 0%, 81%);
+    --highlight-background: hsl(var(--hue), 22%, 40%);
+
+    --accent-color: hsl(var(--hue), 0%, 100%);
+    --accent-color-secondary: hsl(var(--hue), 0%, 72%);
+    --accent-background: hsl(var(--hue), 10%, 28%);
+
+    --disabled-color: hsl(var(--hue), 0%, 72%);
+    --disabled-color-secondary: hsl(var(--hue), 0%, 56%);
+    --disabled-background: hsl(var(--hue), 10%, 17%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --transition-duration: 0s;
+  }
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  background-color: var(--main-background);
+  color: var(--main-color);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu,
+    Cantarell, Helvetica Neue, Arial, sans-serif;
+  font-size: var(--font-size);
+  margin: 0;
+  height: 100%;
+}
+
+#app {
+  width: 100vw;
+  height: 100%;
+  overflow: hidden;
+}
+
+.sr-only {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
