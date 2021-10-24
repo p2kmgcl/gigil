@@ -1,0 +1,3 @@
+[build]
+  publish = "build/app/"
+  command = "yarn run build"
