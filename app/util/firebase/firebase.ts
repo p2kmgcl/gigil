@@ -1,6 +1,13 @@
 import * as pkg from '../../../package.json';
 import { FirebaseApp, initializeApp } from 'firebase/app';
 import {
+  Analytics,
+  setAnalyticsCollectionEnabled,
+  setUserProperties,
+  setUserId,
+  initializeAnalytics,
+} from 'firebase/analytics';
+import {
   Auth,
   browserLocalPersistence,
   getAuth,
@@ -27,8 +34,9 @@ const INITIALIZED_KEY = `${pkg.name}-${pkg.version}-firestone-initialized`;
 let app: FirebaseApp;
 let auth: Auth;
 let db: Firestore;
+let analytics: Analytics;
 
-export async function init() {
+export function init() {
   app = initializeApp({
     apiKey: 'AIzaSyDbPzrRLhwS397moYsZuRQfCmn_CUxrIMw',
     authDomain: 'gigil-5ac9c.firebaseapp.com',
@@ -36,19 +44,28 @@ export async function init() {
     storageBucket: 'gigil-5ac9c.appspot.com',
     messagingSenderId: '660164657539',
     appId: '1:660164657539:web:24c58b0740963d69b5b6b6',
+    measurementId: 'G-KL6VXT6PJ5',
   });
 
+  analytics = initializeAnalytics(app);
+  setAnalyticsCollectionEnabled(analytics, true);
+  setUserProperties(analytics, { origin: window.location.origin });
+
+  auth = getAuth(app);
+}
+
+export async function initDatabase() {
   await new Promise<void>((resolve) => {
-    onAuthStateChanged(getAuth(app), async () => {
+    onAuthStateChanged(auth, async () => {
       if (!(globalThis as any)[INITIALIZED_KEY]) {
         const firestore = initializeFirestore(app, {});
         await enableMultiTabIndexedDbPersistence(firestore);
       }
 
       (globalThis as any)[INITIALIZED_KEY] = true;
-      auth = getAuth(app);
       await setPersistence(auth, browserLocalPersistence);
       db = getFirestore(app);
+      setUserId(analytics, auth.currentUser?.uid || 'anonymous');
       resolve();
     });
   });
@@ -60,6 +77,10 @@ export function getMaybeCurrentUser() {
 
 export function getDB() {
   return db;
+}
+
+export function getAnalytics() {
+  return analytics;
 }
 
 export function signIn() {

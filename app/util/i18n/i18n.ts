@@ -27,7 +27,7 @@ export async function loadLanguage(key: keyof typeof LANGUAGES) {
   }
 }
 
-export async function setDefaultCurrency(currency: string) {
+export function setDefaultCurrency(currency: string) {
   defaultCurrency = currency;
 }
 

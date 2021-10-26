@@ -1,6 +1,7 @@
 import { onSnapshot } from 'firebase/firestore';
 import { useEffect, useMemo, useState } from 'react';
 import { ExtendedConverter, Reference } from './firebase';
+import { logger } from './logger';
 
 async function loadReferences<T>(o: T): Promise<T> {
   if (o instanceof Reference) {
@@ -34,21 +35,32 @@ export function useDocument<K extends string, T>(
       isValidating: true,
     });
 
-    return onSnapshot(converter.createReference(memoizedFieldPath).doc, {
+    const reference = converter.createReference(memoizedFieldPath);
+    logger.time(`load_document_${reference.doc.path}`);
+
+    return onSnapshot(reference.doc, {
       next: async (documentSnapshot) => {
         try {
           const convertedDocument = documentSnapshot.data();
 
           if (convertedDocument) {
+            logger.time(`load_document_references_${reference.doc.path}`);
             await loadReferences(convertedDocument);
+            logger.timeEnd(`load_document_references_${reference.doc.path}`);
           }
+
+          logger.timeEnd(`load_document_${reference.doc.path}`);
 
           setStatus({
             data: convertedDocument as T | null,
             error: null,
             isValidating: false,
           });
-        } catch (error) {
+        } catch (error: any) {
+          logger.timeEnd(`load_document_references_${reference.doc.path}`, {
+            error: error.toString(),
+          });
+
           setStatus({
             data: null,
             error: error as Error,
@@ -57,6 +69,10 @@ export function useDocument<K extends string, T>(
         }
       },
       error: (error) => {
+        logger.timeEnd(`load_document_${reference.doc.path}`, {
+          error: error.toString(),
+        });
+
         setStatus({
           data: null,
           error,

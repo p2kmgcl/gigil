@@ -1,6 +1,7 @@
 import { onSnapshot, query, QueryConstraint } from 'firebase/firestore';
 import { useEffect, useMemo, useState } from 'react';
 import { ExtendedConverter, Reference } from './firebase';
+import { logger } from './logger';
 
 const DEFAULT_QUERY_CONSTRAINTS: QueryConstraint[] = [];
 
@@ -44,44 +45,53 @@ export function useCollection<K extends string, T>(
       isValidating: true,
     });
 
-    return onSnapshot(
-      query(
-        converter.createCollection(memoizedFieldPath),
-        ...memoizedQueryConstraints,
-      ),
-      {
-        next: async (querySnapshot) => {
-          try {
-            const convertedDocuments = querySnapshot.docs
-              .map((snapshot) => snapshot.data() || null)
-              .filter((data) => data) as T[];
+    const reference = converter.createCollection(memoizedFieldPath);
+    logger.time(`load_collection_${reference.path}`);
 
-            for (const convertedDocument of convertedDocuments) {
-              await loadReferences(convertedDocument);
-            }
+    return onSnapshot(query(reference, ...memoizedQueryConstraints), {
+      next: async (querySnapshot) => {
+        try {
+          const convertedDocuments = querySnapshot.docs
+            .map((snapshot) => snapshot.data() || null)
+            .filter((data) => data) as T[];
 
-            setStatus({
-              data: convertedDocuments,
-              error: null,
-              isValidating: false,
-            });
-          } catch (error) {
-            setStatus({
-              data: [],
-              error: error as Error,
-              isValidating: false,
-            });
+          logger.time(`load_collection_references_${reference.path}`);
+          for (const convertedDocument of convertedDocuments) {
+            await loadReferences(convertedDocument);
           }
-        },
-        error: (error) => {
+          logger.timeEnd(`load_collection_references_${reference.path}`);
+
+          logger.timeEnd(`load_collection_${reference.path}`);
+
           setStatus({
-            data: [],
-            error,
+            data: convertedDocuments,
+            error: null,
             isValidating: false,
           });
-        },
+        } catch (error: any) {
+          logger.timeEnd(`load_collection_references_${reference.path}`, {
+            error: error.toString(),
+          });
+
+          setStatus({
+            data: [],
+            error: error as Error,
+            isValidating: false,
+          });
+        }
       },
-    );
+      error: (error) => {
+        logger.timeEnd(`load_collection_${reference.path}`, {
+          error: error.toString(),
+        });
+
+        setStatus({
+          data: [],
+          error,
+          isValidating: false,
+        });
+      },
+    });
   }, [converter, memoizedFieldPath, memoizedQueryConstraints]);
 
   return status;

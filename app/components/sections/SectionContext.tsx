@@ -4,8 +4,10 @@ import {
   ReactElement,
   ReactNode,
   useContext,
+  useEffect,
   useState,
 } from 'react';
+import { logger } from '../../util/firebase/logger';
 import { CategoryDialog } from '../dialogs/CategoryDialog';
 import { DepositDialog } from '../dialogs/DepositDialog';
 import { DialogProps } from '../dialogs/DialogContext';
@@ -49,6 +51,10 @@ export function SectionContextProvider({
 }): ReactElement {
   const [sectionId, setSectionId] =
     useState<keyof typeof Sections>(defaultSectionId);
+
+  useEffect(() => {
+    logger.log(`enter_section_${sectionId}`);
+  }, [sectionId]);
 
   return (
     <SectionContext.Provider value={{ sectionId, setSectionId }}>
