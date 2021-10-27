@@ -23,7 +23,7 @@ export const logger = {
     }
 
     logEvent(getAnalytics(), 'debug', {
-      eventName,
+      debugEventName: eventName,
       timestamp,
       ...data,
     });
