@@ -260,3 +260,5 @@ export const MovementDialog: FC<DialogProps & { movement?: Movement }> = ({
     </Form>
   );
 };
+
+export default MovementDialog;

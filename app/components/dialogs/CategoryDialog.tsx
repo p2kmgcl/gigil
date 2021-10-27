@@ -65,3 +65,5 @@ export const CategoryDialog: FC<DialogProps & { category?: Category }> = ({
     </Form>
   );
 };
+
+export default CategoryDialog;

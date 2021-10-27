@@ -34,3 +34,5 @@ export const Categories: FC = () => {
     </>
   );
 };
+
+export default Categories;

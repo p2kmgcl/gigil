@@ -1,6 +1,8 @@
 import {
   createContext,
   FC,
+  lazy,
+  LazyExoticComponent,
   ReactElement,
   ReactNode,
   useContext,
@@ -8,29 +10,38 @@ import {
   useState,
 } from 'react';
 import { logger } from '../../util/firebase/logger';
-import { CategoryDialog } from '../dialogs/CategoryDialog';
-import { DepositDialog } from '../dialogs/DepositDialog';
 import { DialogProps } from '../dialogs/DialogContext';
-import { MovementDialog } from '../dialogs/MovementDialog';
-import { Categories } from './categories/Categories';
-import { Deposits } from './deposits/Deposits';
-import { Home } from './home/Home';
 
 const Sections: Record<
   string,
-  { Component: FC; addButton?: { label: string; Component: FC<DialogProps> } }
+  {
+    Component: LazyExoticComponent<FC>;
+    addButton?: {
+      label: string;
+      Component: LazyExoticComponent<FC<DialogProps>>;
+    };
+  }
 > = {
   home: {
-    Component: Home,
-    addButton: { label: 'add-new-movement', Component: MovementDialog },
+    Component: lazy(() => import('./home/Home')),
+    addButton: {
+      label: 'add-new-movement',
+      Component: lazy(() => import('../dialogs/MovementDialog')),
+    },
   },
   deposits: {
-    Component: Deposits,
-    addButton: { label: 'add-new-deposit', Component: DepositDialog },
+    Component: lazy(() => import('./deposits/Deposits')),
+    addButton: {
+      label: 'add-new-deposit',
+      Component: lazy(() => import('../dialogs/DepositDialog')),
+    },
   },
   categories: {
-    Component: Categories,
-    addButton: { label: 'add-new-category', Component: CategoryDialog },
+    Component: lazy(() => import('./categories/Categories')),
+    addButton: {
+      label: 'add-new-category',
+      Component: lazy(() => import('../dialogs/CategoryDialog')),
+    },
   },
 };
 

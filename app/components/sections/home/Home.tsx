@@ -10,3 +10,5 @@ export const Home: FC = () => (
     <MovementList />
   </>
 );
+
+export default Home;

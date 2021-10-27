@@ -2,8 +2,9 @@ import { getMaybeCurrentUser, signIn } from '../../util/firebase/firebase';
 import { Button } from '../common/Button';
 import { getText } from '../../util/i18n/i18n';
 import { AccountSelector } from './AccountSelector';
+import { FC } from 'react';
 
-export function Setup() {
+export const Setup: FC = () => {
   const currentUser = getMaybeCurrentUser();
 
   const handleSignInClick = async () => {
@@ -28,4 +29,6 @@ export function Setup() {
       )}
     </main>
   );
-}
+};
+
+export default Setup;

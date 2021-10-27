@@ -1,13 +1,24 @@
 <!DOCTYPE html>
-<html lang="es-ES">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gigil</title>
-    <link rel="manifest" href="./manifest.webmanifest" />
+    <meta name="theme-color" content="#272833" />
+    <link rel="manifest" href="./manifest.json" />
+    <link rel="stylesheet" href="./index.scss" />
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <link rel="icon" href="./favicon.png?as=png&width=48" />
+    <link rel="apple-touch-icon" href="./favicon.png?as=png&width=180" />
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app">
+      <noscript>
+        You need JavaScript enabled to use this application.
+      </noscript>
+    </div>
+
     <script type="module" src="index.tsx"></script>
   </body>
 </html>

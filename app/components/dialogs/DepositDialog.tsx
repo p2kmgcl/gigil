@@ -123,3 +123,5 @@ export const DepositDialog: FC<DialogProps & { deposit?: Deposit }> = ({
     </Form>
   );
 };
+
+export default DepositDialog;

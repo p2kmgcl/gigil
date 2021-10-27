@@ -4,16 +4,19 @@ import { Button } from './common/Button';
 import { useOpenDialog } from './dialogs/DialogContext';
 import { getText } from '../util/i18n/i18n';
 import { useSections } from './sections/SectionContext';
+import { Suspense } from 'react';
 
 export const App = () => {
   const openDialog = useOpenDialog();
   const [sections, sectionId, setSectionId] = useSections();
-  const { Component: SectionComponent, addButton } = sections[sectionId];
+  const { Component, addButton } = sections[sectionId];
 
   return (
     <main className="App__main">
       <div className="App__content">
-        <SectionComponent />
+        <Suspense fallback="">
+          <Component />
+        </Suspense>
       </div>
 
       <header className="App__header">

@@ -1,8 +1,4 @@
-import 'url:./robots.txt';
-import './index.scss';
 import { render } from 'react-dom';
-import { App } from './components/App';
-import { Setup } from './components/setup/Setup';
 import { getMaybeConfig } from './util/config';
 import {
   getMaybeCurrentUser,
@@ -13,10 +9,16 @@ import { loadLanguage, setDefaultCurrency } from './util/i18n/i18n';
 import { DialogContextProvider } from './components/dialogs/DialogContext';
 import { SectionContextProvider } from './components/sections/SectionContext';
 import { logger } from './util/firebase/logger';
+import manifest from './manifest.json';
+import { lazy, Suspense } from 'react';
+import { App } from './components/App';
 
 (async function () {
+  logger.time('init');
+  document.documentElement.title = manifest.name;
+  document.documentElement.lang = manifest.lang;
   initFirebase();
-  logger.log('init');
+  logger.timeEnd('init');
 
   logger.time('load_language');
   await loadLanguage(document.documentElement.lang as any);
@@ -29,12 +31,17 @@ import { logger } from './util/firebase/logger';
 
   const app = document.getElementById('app');
   const ready = Boolean(getMaybeCurrentUser() && getMaybeConfig());
-  const MainComponent = ready ? App : Setup;
+
+  const MainComponent = ready
+    ? App
+    : lazy(() => import('./components/setup/Setup'));
 
   render(
     <DialogContextProvider>
       <SectionContextProvider defaultSectionId="home">
-        <MainComponent />
+        <Suspense fallback="">
+          <MainComponent />
+        </Suspense>
       </SectionContextProvider>
     </DialogContextProvider>,
     app,
@@ -42,8 +49,6 @@ import { logger } from './util/firebase/logger';
 
   navigator.serviceWorker?.register(
     new URL('./service-worker.ts', import.meta.url),
-    {
-      type: 'module',
-    },
+    { type: 'module' },
   );
 })();

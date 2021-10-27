@@ -1,21 +1,11 @@
-import { manifest as fileList, version as hash } from '@parcel/service-worker';
 import pkg from '../package.json';
-
-const CACHE_NAME = `${pkg.name}-${pkg.version}-${hash}`;
-const FILE_LIST = ['/', ...Array.from(new Set(fileList))];
+const CACHE_NAME = `${pkg.name}-${pkg.version}`;
 
 const sw: ServiceWorkerGlobalScope =
   self as unknown as ServiceWorkerGlobalScope;
 
-sw.addEventListener('install', (event) => {
+sw.addEventListener('install', () => {
   sw.skipWaiting();
-
-  event.waitUntil(
-    (async () => {
-      const cache = await caches.open(CACHE_NAME);
-      await cache.addAll(FILE_LIST);
-    })(),
-  );
 });
 
 sw.addEventListener('activate', (event) => {
@@ -29,3 +19,29 @@ sw.addEventListener('activate', (event) => {
     })(),
   );
 });
+
+sw.addEventListener('fetch', (event) =>
+  event.respondWith(
+    (async () => {
+      if (
+        process.env.NODE_ENV === 'development' ||
+        new URL(event.request.url).origin !== sw.location.origin
+      ) {
+        return fetch(event.request);
+      }
+
+      const cache = await caches.open(CACHE_NAME);
+      const cacheResponse = await cache.match(event.request);
+
+      if (cacheResponse) {
+        cache.add(event.request);
+        return cacheResponse;
+      }
+
+      const response = await fetch(event.request);
+      cache.put(event.request, response.clone());
+
+      return response;
+    })(),
+  ),
+);

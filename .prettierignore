@@ -1,6 +1,5 @@
 build/
 node_modules/
-.husky
 .netlify
 .editorconfig
 .eslintignore
@@ -9,4 +8,5 @@ node_modules/
 yarn.lock
 *.svg
 *.png
+*.jpg
 *.txt

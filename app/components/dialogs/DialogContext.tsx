@@ -3,6 +3,7 @@ import {
   createContext,
   FC,
   Ref,
+  Suspense,
   useCallback,
   useContext,
   useState,
@@ -109,7 +110,9 @@ export const DialogContextProvider: FC = ({ children }) => {
             style={{ zIndex: zIndex + MODAL_BASE_ZINDEX }}
             tabIndex={-1}
           >
-            <Component {...baseProps} {...extraProps} />
+            <Suspense fallback="">
+              <Component {...baseProps} {...extraProps} />
+            </Suspense>
           </div>
         ),
       )}

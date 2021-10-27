@@ -11,3 +11,5 @@ export const Deposits: FC = () => {
     </>
   );
 };
+
+export default Deposits;
