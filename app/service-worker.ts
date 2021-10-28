@@ -23,10 +23,14 @@ sw.addEventListener('activate', (event) => {
 sw.addEventListener('fetch', (event) =>
   event.respondWith(
     (async () => {
+      console.log('requestOrigin', new URL(event.request.url).origin);
+      console.log('swOrigin', sw.location.origin);
+
       if (
         process.env.NODE_ENV === 'development' ||
         new URL(event.request.url).origin !== sw.location.origin
       ) {
+        console.log('return fetch');
         return fetch(event.request);
       }
 
@@ -34,13 +38,18 @@ sw.addEventListener('fetch', (event) =>
       const cacheResponse = await cache.match(event.request);
 
       if (cacheResponse) {
+        console.log('refresh cache');
         cache.add(event.request);
+        console.log('return cache');
         return cacheResponse;
       }
 
+      console.log('fetch response');
       const response = await fetch(event.request);
+      console.log('add to cache');
       cache.put(event.request, response.clone());
 
+      console.log('return response');
       return response;
     })(),
   ),

@@ -46,7 +46,7 @@ export function useCollection<K extends string, T>(
     });
 
     const reference = converter.createCollection(memoizedFieldPath);
-    logger.time(`load_collection_${reference.path}`);
+    logger.time('load_collection', { path: reference.path });
 
     return onSnapshot(query(reference, ...memoizedQueryConstraints), {
       next: async (querySnapshot) => {
@@ -55,13 +55,13 @@ export function useCollection<K extends string, T>(
             .map((snapshot) => snapshot.data() || null)
             .filter((data) => data) as T[];
 
-          logger.time(`load_collection_references_${reference.path}`);
           for (const convertedDocument of convertedDocuments) {
+            logger.time('load_collection_references', { path: reference.path });
             await loadReferences(convertedDocument);
+            logger.timeEnd('load_collection_references');
           }
-          logger.timeEnd(`load_collection_references_${reference.path}`);
 
-          logger.timeEnd(`load_collection_${reference.path}`);
+          logger.timeEnd('load_collection');
 
           setStatus({
             data: convertedDocuments,
@@ -69,7 +69,7 @@ export function useCollection<K extends string, T>(
             isValidating: false,
           });
         } catch (error: any) {
-          logger.timeEnd(`load_collection_references_${reference.path}`, {
+          logger.timeEnd('load_collection_references', {
             error: error.toString(),
           });
 
@@ -81,7 +81,7 @@ export function useCollection<K extends string, T>(
         }
       },
       error: (error) => {
-        logger.timeEnd(`load_collection_${reference.path}`, {
+        logger.timeEnd('load_collection', {
           error: error.toString(),
         });
 

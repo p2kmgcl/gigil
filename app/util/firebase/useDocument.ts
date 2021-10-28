@@ -36,7 +36,7 @@ export function useDocument<K extends string, T>(
     });
 
     const reference = converter.createReference(memoizedFieldPath);
-    logger.time(`load_document_${reference.doc.path}`);
+    logger.time('load_document', { path: reference.doc.path });
 
     return onSnapshot(reference.doc, {
       next: async (documentSnapshot) => {
@@ -44,12 +44,15 @@ export function useDocument<K extends string, T>(
           const convertedDocument = documentSnapshot.data();
 
           if (convertedDocument) {
-            logger.time(`load_document_references_${reference.doc.path}`);
+            logger.time('load_document_references', {
+              path: reference.doc.path,
+            });
+
             await loadReferences(convertedDocument);
-            logger.timeEnd(`load_document_references_${reference.doc.path}`);
+            logger.timeEnd('load_document_references');
           }
 
-          logger.timeEnd(`load_document_${reference.doc.path}`);
+          logger.timeEnd('load_document');
 
           setStatus({
             data: convertedDocument as T | null,
@@ -57,7 +60,7 @@ export function useDocument<K extends string, T>(
             isValidating: false,
           });
         } catch (error: any) {
-          logger.timeEnd(`load_document_references_${reference.doc.path}`, {
+          logger.timeEnd('load_document_references', {
             error: error.toString(),
           });
 
@@ -69,7 +72,7 @@ export function useDocument<K extends string, T>(
         }
       },
       error: (error) => {
-        logger.timeEnd(`load_document_${reference.doc.path}`, {
+        logger.timeEnd('load_document', {
           error: error.toString(),
         });
 

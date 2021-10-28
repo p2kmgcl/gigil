@@ -22,10 +22,12 @@ export const logger = {
       console.groupEnd();
     }
 
-    logEvent(getAnalytics(), 'debug', {
-      debugEventName: eventName,
-      timestamp,
-      ...data,
+    logEvent(getAnalytics(), '__debug', {
+      __eventName: eventName,
+      __timestamp: timestamp,
+      ...Object.fromEntries(
+        Object.entries(data).map(([key, value]) => [`__${key}`, value]),
+      ),
     });
   },
 

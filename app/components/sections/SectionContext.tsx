@@ -64,7 +64,7 @@ export function SectionContextProvider({
     useState<keyof typeof Sections>(defaultSectionId);
 
   useEffect(() => {
-    logger.log(`enter_section_${sectionId}`);
+    logger.log('enter_section', { sectionId });
   }, [sectionId]);
 
   return (
